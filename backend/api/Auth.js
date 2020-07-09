@@ -57,7 +57,12 @@ router.post("/login", async (req, res, next) => {
         user.password
       );
       if (isValidPassword) {
-        res.cookie("user_id", user.id);
+        const isSecure = req.app.get("env") != "development";
+        res.cookie("user_id", user.id, {
+          httpOnly: true,
+          signed: true,
+          secure: isSecure,
+        });
         res.json({
           message: "Logged in",
         });
