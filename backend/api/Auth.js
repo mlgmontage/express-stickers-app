@@ -64,6 +64,7 @@ router.post("/login", async (req, res, next) => {
           secure: isSecure,
         });
         res.json({
+          id: user.id,
           message: "Logged in",
         });
       } else {

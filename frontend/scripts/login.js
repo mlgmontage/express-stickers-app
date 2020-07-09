@@ -17,6 +17,7 @@ $(() => {
         const $successMessage = $("#successMessage");
         $successMessage.text(result.message);
         $successMessage.show();
+        window.location = `/user.html?id=${result.id}`;
       })
       .catch((error) => {
         console.log(error);
