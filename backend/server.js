@@ -5,6 +5,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
+const authMiddleware = require("./api/middleware");
 const app = express();
 
 app.use(express.json());
@@ -23,7 +24,7 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(express.static("../frontend"));
 
 // API
-app.use("/users", require("./api/User"));
+app.use("/users", authMiddleware.ensureLoggedIn, require("./api/User"));
 app.use("/auth", require("./api/Auth"));
 
 // Error handler

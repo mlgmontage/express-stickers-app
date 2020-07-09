@@ -27,7 +27,7 @@ router.get("/:id/stickers", async (req, res, next) => {
     if (user.length > 0) {
       const { id, username } = user[0];
       const stickers = await Stickers.getStickerByUserId(id);
-      res.json({ id, username, stickers });
+      res.json(stickers);
     } else {
       next(new Error("User Not found"));
     }
