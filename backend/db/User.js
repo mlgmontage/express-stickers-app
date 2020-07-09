@@ -1,7 +1,7 @@
 const knex = require("./connection");
 
-const getUsers = () => {
-  return knex("Users").select();
+const getUserById = (id) => {
+  return knex("Users").where({ id }).select();
 };
 
 const getOneByUsername = (username) => {
@@ -17,7 +17,7 @@ const create = (user) => {
 };
 
 module.exports = {
-  getUsers,
+  getUserById,
   getOneByUsername,
   create,
 };
