@@ -47,4 +47,29 @@ router.post("/signup", async (req, res, next) => {
   }
 });
 
+router.post("/login", async (req, res, next) => {
+  if (validUser(req.body)) {
+    // check to see if in DB
+    const user = await User.getOneByUsername(req.body.name);
+    if (user) {
+      const isValidPassword = await bcrypt.compare(
+        req.body.password,
+        user.password
+      );
+      if (isValidPassword) {
+        res.cookie("user_id", user.id);
+        res.json({
+          message: "Logged in",
+        });
+      } else {
+        next(new Error("Invalid password"));
+      }
+    } else {
+      next(new Error("User doesn't exist"));
+    }
+  } else {
+    next(new Error("Invalid login"));
+  }
+});
+
 module.exports = router;
