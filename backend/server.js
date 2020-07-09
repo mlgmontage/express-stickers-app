@@ -14,6 +14,9 @@ app.use(morgan("dev"));
 app.use(helmet());
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
+// Serve static file
+app.use(express.static("../frontend"));
+
 // API
 app.use("/users", require("./api/User"));
 app.use("/auth", require("./api/Auth"));
