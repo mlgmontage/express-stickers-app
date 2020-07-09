@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const router = Router();
 const User = require("../db/User");
+const bcrypt = require("bcrypt");
 
 router.get("/", async (req, res) => {
   res.json({
@@ -20,12 +21,21 @@ function validUser(user) {
 // or register
 router.post("/signup", async (req, res, next) => {
   if (validUser(req.body)) {
-    User.getOneByUsername(req.body.name).then((user) => {
+    User.getOneByUsername(req.body.name).then(async (user) => {
       // if user not found
       if (!user) {
-        // this is unique email
-        res.json({
-          message: "You can use this email to register",
+        // Hashing the password
+        const hashed = await bcrypt.hash(req.body.password, 10);
+        const user = {
+          username: req.body.name,
+          password: hashed,
+        };
+
+        User.create(user).then((id) => {
+          res.json({
+            id,
+            message: "Registered",
+          });
         });
       } else {
         // email in use
